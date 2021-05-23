@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, Card, Collapse } from "react-bootstrap";
 
@@ -6,10 +6,20 @@ import AddExpense from "./AddExpense";
 import AddIncome from "./AddIncome";
 
 const Details = (props) => {
+  // const MONEY = props.income.funds;
+  const [money, setMoney] = useState();
+  const expenseIsValid = props.expenses.length;
+  const saveCalcMoney = (moneySpent) => {
+    setMoney(moneySpent);
+    console.log("saveCalc", moneySpent);
+    console.log("money:", money);
+  };
+  useEffect(() => {
+    setMoney(props.income.funds);
+  }, [props.income]);
   const saveIncomeHandler = (incomeData) => {
     const newIncome = {
       ...incomeData,
-      id: Math.random.toString(),
     };
     props.onAddIncome(newIncome);
     setCollapseState(false);
@@ -19,6 +29,7 @@ const Details = (props) => {
       ...newExpenseData,
       id: Math.random().toString(),
     };
+
     props.onAdd(newData);
     setCollapseState1(false);
   };
@@ -52,18 +63,32 @@ const Details = (props) => {
           <div className="d-flex justify-content-between mb-3">
             <span className="text-center">
               <h4 className="text-uppercase mb-1">Current Monthly Salary</h4>
-              <h2>Rs. {props.income.salary}</h2>
+              <h2>&#8377; {props.income.salary}</h2>
             </span>
             <span className="text-center">
               <h5>Mandatory Savings</h5>
-              <h3>Rs {props.income.savings}</h3>
+              <h3>&#8377; {props.income.savings}</h3>
             </span>
             <span className="text-center">
               <h5>Expendable funds</h5>
-              <h3>Rs {props.income.funds}</h3>
+              <h3>&#8377; {props.income.funds}</h3>
             </span>
           </div>
-
+          <div className="float-left">
+            <h3>
+              Money Left:
+              {expenseIsValid === 0 ? (
+                <span className="text-info"> &#8377; {props.income.funds}</span>
+              ) : (
+                <span
+                  className={`${money <= 500 ? "text-danger" : "text-success"}`}
+                >
+                  {" "}
+                  &#8377; {money}
+                </span>
+              )}
+            </h3>
+          </div>
           <div className="text-right">
             <Button
               onClick={() => {
@@ -93,7 +118,12 @@ const Details = (props) => {
           </Collapse>
           <Collapse in={collapseState1}>
             <div className="mt-3">
-              <AddExpense onClose={closeForm2} onSave={saveNewItemHandler} isValid={props.income.funds} />
+              <AddExpense
+                onClose={closeForm2}
+                onSave={saveNewItemHandler}
+                isValid={money}
+                moneyLeft={saveCalcMoney}
+              />
             </div>
           </Collapse>
         </Card.Body>

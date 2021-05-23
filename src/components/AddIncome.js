@@ -36,7 +36,9 @@ const AddIncome = (props) => {
           <Form.Group className="col-md-6">
             <Form.Label>Add Monthly Income</Form.Label>
             <Form.Control
+              required={true}
               type="number"
+              value={monthlyIncome}
               placeholder="Enter"
               onChange={monthlyIncomeHandler}
             />
@@ -44,7 +46,9 @@ const AddIncome = (props) => {
           <Form.Group className="col-md-6">
             <Form.Label>Add Savings Amount</Form.Label>
             <Form.Control
+              required={true}
               type="number"
+              value={savings}
               placeholder="Enter"
               onChange={savingsHandler}
             />

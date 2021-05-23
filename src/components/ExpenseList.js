@@ -1,7 +1,11 @@
-import React from "react";
+import React, { /* useEffect */ } from "react";
 import ExpenseItem from "./ExpenseItem";
 
 const ExpenseList = (props) => {
+ /*  useEffect(()=>{
+    console.log(props.items);
+    
+  }) */
   if (props.items.length === 0) {
     return (
       <div className="text-white text-center">
@@ -10,6 +14,7 @@ const ExpenseList = (props) => {
       </div>
     );
   }
+ 
   return (
     <div className="container">
       <h1 className="text-white">My Expenses</h1>
@@ -18,11 +23,13 @@ const ExpenseList = (props) => {
           {props.items.map((expense) => (
             <ExpenseItem
               key={expense.id}
+              expense={expense}
+              /* id={expense.id}
               title={expense.title}
               amount={expense.amount}
-              type={expense.type}
+              type={expense.type} */
               onDeleteItem={props.onDelete}
-              purchase={expense.purchase}
+              /* purchase={expense.purchase} */
             />
           ))}
         </ul>
